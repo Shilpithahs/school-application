@@ -1,0 +1,18 @@
+.admin-card {
+	width: 50%;
+    margin-left: 25%;
+    margin-top: 14%;
+    padding: 8%;
+}
+
+.admin-card {
+	width: 80%;
+    margin-left: 10%;
+    margin-top: 13%;
+    padding: 5%;
+    box-shadow: -1px 1px 11px 6px #8c8e90;
+}
+
+.admin-btn {
+	margin-right: 150px;
+}
