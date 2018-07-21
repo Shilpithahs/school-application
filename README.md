@@ -1,39 +1,19 @@
-# Student Management
-### Created By [Sangwin Gawande](http://imsangwin.com)
+# MySchoolApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.4.3.
-
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
 
 ## Feature list
 
  * Admin Login & Logout
+ * Teacher Login & Logout
+ * student Login & Logout
  * Student Listing
  * Student Searching
  * Student Details
  * Student Addition
  * Student Update
  * Student Deletion
-
-
-## Angular 4 features used
-
- * Modules
- * Routes
- * Services
- * Components
- * Browser Animations
- * Forms Module
- * Reactive Forms
- * Directives
- * Pipes
- * Filters
- 
-
-## Libraries Used
-
- * W3CSS front end design
- * Font Awesome Icons
- * Toster for success/error messages
+ * Student Test
 
 ## Development server
 
@@ -45,7 +25,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
 ## Running unit tests
 
