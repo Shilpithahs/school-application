@@ -13,6 +13,7 @@
 		<div class="w3-panel w3-red"  *ngIf="loginForm.controls.password.invalid && (loginForm.controls.password.dirty || loginForm.controls.password.touched)">Password must be at least 6 characters long, and contain a number</div> 
 		<br>
 		<button class="w3-btn w3-blue" type="submit" [disabled]="!loginForm.valid">Login <i class="w3-medium fa fa-check"></i> </button>
+		<a [routerLink]="['/register']" class="btn btn-link">Register</a>
 	</form>
 	<div>
 		<p></p>

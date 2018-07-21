@@ -3,14 +3,11 @@ import { AuthService, AppGlobals } from 'angular2-google-login';
 
 @Component({
 	selector: 'app-root',
-	// template: `<google-signin></google-signin>
-	// <router-outlet></router-outlet>`,
 	templateUrl: './app.component.html',
 	styleUrls: ['./app.component.css']
 })
 
 export class AppComponent {
-	title = 'Student Management By Sangwin Gawande';
 
 	// Add few students for initial listing
 	studentsList = [
@@ -128,13 +125,13 @@ export class GoogleSigninComponent implements AfterViewInit {
   //   console.log("ID Token: " + id_token);
   // };
 
-  constructor(private element: ElementRef,  _googleAuth: AuthService) {
+  constructor(private element: ElementRef) {
     console.log('ElementRef: ', this.element);
   }
 
-	ngOnInit() {
-		AppGlobals.GOOGLE_CLIENT_ID = this.clientId;
-	}
+	// ngOnInit() {
+	// 	AppGlobals.GOOGLE_CLIENT_ID = this.clientId;
+	// }
   ngAfterViewInit() {
     this.googleInit();
   }

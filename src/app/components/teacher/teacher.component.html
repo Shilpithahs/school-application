@@ -1,17 +1,18 @@
 <!-- Side Bar -->
 <nav class="w3-sidebar w3-bar-block w3-collapse w3-animate-left w3-card-2" style="z-index:3;width:250px;" id="mySidebar">
-    <!-- Sidebar Links -->
-    <a class="w3-bar-item w3-button" [ngClass]="{'w3-teal': (active == '/studentList')}" routerLink="/teacher/studentList"> <i class="w3-medium fa fa-user"></i> Student List</a>
-    <a class="w3-bar-item w3-button" routerLink="/teacher/addStudent"  [ngClass]="{'w3-teal': (active == '/addStudent')}"> <i class="w3-medium fa fa-plus"></i>  Add new student</a>
-    <a class="w3-bar-item w3-button" routerLink="/teacher/addSubject"  [ngClass]="{'w3-teal': (active == '/addSubject')}"> <i class="w3-medium fa fa-plus"></i>  Add Subject</a>
-    <a class="w3-bar-item w3-button" routerLink="/teacher/addTest"  [ngClass]="{'w3-teal': (active == '/addTest')}"> <i class="w3-medium fa fa-plus"></i>  Add Test</a>
-    <a class="w3-bar-item w3-button" (click)="logOut()"><i class="w3-medium fa fa-sign-out"></i>  Logout</a>
-  </nav>
+  <!-- Sidebar Links -->
+  <a class="w3-bar-item w3-button sideBtn" [ngClass]="{'w3-teal': (active == '/studentList')}" routerLink="/teacher/studentList"><i class="w3-medium fa fa-user"></i> Student List
+  </a>
+  <a class="w3-bar-item w3-button sideBtn" routerLink="/teacher/addStudent"  [ngClass]="{'w3-teal': (active == '/addStudent')}"> <i class="w3-medium fa fa-plus"></i>  Add new student</a>
+  <a class="w3-bar-item w3-button sideBtn" routerLink="/teacher/addSubject"  [ngClass]="{'w3-teal': (active == '/addSubject')}"> <i class="w3-medium fa fa-plus"></i>  Add Subject</a>
+  <a class="w3-bar-item w3-button sideBtn" routerLink="/teacher/test"  [ngClass]="{'w3-teal': (active == '/test')}"> <i class="w3-medium fa fa-plus"></i>  Add Test</a>
+  <a class="w3-bar-item w3-button sideBtn" (click)="logOut()"><i class="w3-medium fa fa-sign-out"></i>  Logout</a>
+</nav>
   
-  <!-- Load main contents -->
-  <div class="w3-main" style="margin-left:250px;">
-    <div class="w3-container">
-    <!-- Initiate Child Routing -->
-      <router-outlet></router-outlet>
-    </div>
+<!-- Load main contents -->
+<div class="w3-main" style="margin-left:250px;">
+  <div class="w3-container">
+  <!-- Initiate Child Routing -->
+    <router-outlet></router-outlet>
   </div>
+</div>

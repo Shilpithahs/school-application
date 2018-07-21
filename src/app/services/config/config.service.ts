@@ -9,6 +9,24 @@ export class ConfigService {
 
 export class ValidationService {
 
+	static firstNameValidator(control) {
+		// RFC 2822 compliant regex
+		if (control.value.match(/^[a-zA-Z ]+$/)) {
+			return null;
+		} else {
+			return { 'invalidEmailAddress': true };
+		}
+	}
+
+	static lastNameValidator(control) {
+		// RFC 2822 compliant regex
+		if (control.value.match(/^[a-zA-Z ]+$/)) {
+			return null;
+		} else {
+			return { 'invalidEmailAddress': true };
+		}
+	}
+
 	static emailValidator(control) {
 		// RFC 2822 compliant regex
 		if (control.value.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)) {

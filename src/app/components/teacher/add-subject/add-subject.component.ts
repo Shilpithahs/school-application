@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -7,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './add-subject.component.html',
   styleUrls: ['./add-subject.component.css']
 })
+
 export class AddSubjectComponent implements OnInit {
   subject_name;
   private subjectList = new Array<Subject>();

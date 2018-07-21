@@ -9,6 +9,7 @@ import { routerTransition } from '../../../services/config/config.service';
 import { Subject } from '../../../components/teacher/add-subject/add-subject.component';
 
 import { ToastrService } from 'ngx-toastr';
+import { error } from '../../../../../node_modules/protractor';
 
 @Component({
 	selector: 'add-student',
@@ -25,8 +26,8 @@ export class AddStudentComponent implements OnInit {
 	index: any;
 	studentList: any;
 	subjectList: any;
-	constructor(private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute, private studentService: StudentService, private toastr: ToastrService) {
 
+	constructor(private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute, private studentService: StudentService, private toastr: ToastrService) {
 		// Check for route params
 		this.route.params.subscribe(params => {
 			this.index = params['id'];
@@ -44,7 +45,7 @@ export class AddStudentComponent implements OnInit {
 	}
 
 	// Submit student details form
-	doRegister() {
+	doRegisterUser() {
 		if (this.index && this.index != null && this.index != undefined) {
 			this.studentAddForm.value.id = this.index
 		} else {
@@ -52,11 +53,11 @@ export class AddStudentComponent implements OnInit {
 		}
 		let studentRegister = this.studentService.doRegisterStudent(this.studentAddForm.value, this.index, this.selectedSubject);
 		if (studentRegister) {
-			if (studentRegister.code == 200) {
-				this.toastr.success(studentRegister.message, "Success");
-				this.router.navigate(['/']);
+			if (studentRegister['code'] == 200) {
+				this.toastr.success(studentRegister['message'], "Success");
+				this.router.navigate(['/teacher/studentList']);
 			} else {
-				this.toastr.error(studentRegister.message, "Failed");
+				this.toastr.error(studentRegister['message'], "Failed");
 			}
 		}
 	}
@@ -72,6 +73,7 @@ export class AddStudentComponent implements OnInit {
 		this.subjectList = this.studentService.getAllSubjects().data;
 	}
 
+	// on dropdown select change
 	dropDownChanged(value, studentId) {
 		if (studentId != undefined) {
 			this.studentList.forEach(student => {

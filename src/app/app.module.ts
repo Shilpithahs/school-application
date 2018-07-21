@@ -6,6 +6,7 @@ import { enableProdMode } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { HttpModule, Http } from "@angular/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr'; 
 // import { AuthService, AppGlobals } from 'angular2-google-login';
@@ -33,6 +34,7 @@ import { PersonalInfoComponent } from './components/student/personal-info/person
 import { TestComponent } from './components/teacher/test/test.component';
 import { AddSubjectComponent } from './components/teacher/add-subject/add-subject.component';
 import { HomeComponent, homeChildRoutes } from './components/home/home.component';
+import { RegisterComponent } from './components/register/register.component';
 
 // Parent Routes
 const routes : Routes = [
@@ -45,6 +47,10 @@ const routes : Routes = [
 {
 	path: 'login',
 	component: LoginComponent
+},
+{
+	path: 'register',
+	component: RegisterComponent
 },
 {
 	path: 'admin',
@@ -85,10 +91,12 @@ const routes : Routes = [
 	PersonalInfoComponent,
 	TestComponent,
 	AddSubjectComponent,
-	TestComponent
+	TestComponent,
+	RegisterComponent
 	],
 	imports: [
 	BrowserModule,
+	HttpModule,
 	RouterModule,
 	RouterModule.forRoot(routes),
 	FormsModule,

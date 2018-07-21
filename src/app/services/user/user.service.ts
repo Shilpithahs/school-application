@@ -1,10 +1,21 @@
 import { Injectable } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
+import { RequestOptions, Request, RequestMethod, Http, Headers } from '@angular/http';
+import 'rxjs/add/operator/map';
+
 
 @Injectable()
 export class UserService {
 
-	constructor() { }
+	constructor(private _http: Http) { }
+
+	// Get headers
+	private getHeaders() {
+		let headers = new Headers();
+		headers.append("Content-Type", 'application/json');
+		headers.append("Access-Control-Allow-Origin", '*');
+		headers.append("Accept-Language", 'en');
+		return headers;
+	}
 
 	doLogin(data){
 		if (data.email == "admin@gmail.com" && data.password == "admin123") {
@@ -46,7 +57,37 @@ export class UserService {
 		}
 	}
 
-	// doRegister(data){
-		// 	return this.http.post('user-add.php',data);	
-		// }
+	doRegister(data) {
+		if(data.firstName == 'admin'){
+			data.role = 'admin';
+		} else if(data.firstName == 'teacher') {
+			data.role = 'teacher';
+		} else {
+			data.role = 'student';
+		}
+		let user;
+		let returnData;
+		let url = "http://localhost:3000/user";
+		  let requestoptions = new RequestOptions({
+			method: RequestMethod.Post,
+			url: url,
+			headers: this.getHeaders(),
+			body: data
+		  })
+	
+		  this._http.request(new Request(requestoptions))
+			.map(res => res.json())
+			  .subscribe(Response => { 
+				user = Response; 
+				console.log('post register user----', user);
+			  });
+	
+		  returnData = {
+			code: 200,
+			message: "User Registered Successfully Added",
+			data: user
+		  }
+		return returnData;
+	  }
+	
 	}

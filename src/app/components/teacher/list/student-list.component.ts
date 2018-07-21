@@ -17,18 +17,20 @@
  	studentList:any;
  	subjectList:any;
 	studentListData:any;
- 	constructor(private studentService:StudentService,private toastr: ToastrService) { }
- 	// Call student list function on page load 
+
+	constructor(private studentService:StudentService,private toastr: ToastrService) { }
+	 
+ 	// Call studentList and subjectList function on page load 
  	ngOnInit() {
-		 this.getStudentList();
-		 this.getSubjectList();
+		this.getStudentList();
+		this.getSubjectList();
  	}
 
  	// Get student list from services
  	getStudentList(){
  		let studentList = this.studentService.getAllStudents();
  		this.success(studentList)
-	 }
+	}
 	 
 	getSubjectList(){
 		this.subjectList = this.studentService.getAllSubjects().data;
@@ -42,7 +44,7 @@
  		}
  	}
 
- 	// Delete a student with its index
+ 	// Delete a student
  	deleteStudent(index:number){
  		// get confirm box for confirmation
  		let r = confirm("Are you sure?");
@@ -53,8 +55,9 @@
  			} 
  			this.getStudentList();
  		}
-	 }
+	}
 	 
+	// on dropdown select change
 	dropDownChanged(value, studentId) {
 		this.studentList.forEach(student => {
 			if(student.id == studentId) {
@@ -62,9 +65,10 @@
 				this.updateStudent(student.subject, student.id)
 			}
 		});
-	  }
-	  
+	}
+	
+	// Update a student
 	updateStudent(subject: string, id: number){
 		this.subjectList = this.studentService.updateStudent(subject, id);
 	}
- }
+}

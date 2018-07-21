@@ -1,6 +1,5 @@
  import { Component, OnInit } from '@angular/core';
- import {Validators, FormBuilder, FormGroup} from '@angular/forms';
- import { RouterModule, Routes ,Router,ActivatedRoute} from '@angular/router';
+ import { Router,ActivatedRoute} from '@angular/router';
  import { ToastrService } from 'ngx-toastr';
 
  // Services
@@ -18,7 +17,8 @@
  export class StudentDetailsComponent implements OnInit {
 	subjectList:any;
  	index:any;
- 	studentDetail:any;
+	 studentDetail:any;
+
  	constructor(private router: Router, private route: ActivatedRoute, private studentService:StudentService,private toastr: ToastrService) { 
  		// Get user detail index number sent in params
  		this.route.params.subscribe(params => {
@@ -41,7 +41,7 @@
  		}
 	 }
 	 
-	 getSubjectList(){
+	getSubjectList(){
 		this.subjectList = this.studentService.getAllSubjects().data;
 	}
 

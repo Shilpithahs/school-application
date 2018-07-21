@@ -20,7 +20,8 @@
 
 
  export class HomeComponent implements OnInit {
- 	active:string;
+	 active:string;
+
  	constructor(private router: Router,private toastr: ToastrService) {
  		// Detect route changes for active sidebar menu
  		this.router.events.subscribe((val) => {
@@ -43,7 +44,6 @@
  		this.router.navigate(['/login']);
  	}
  }
-
 
  // Define and export child routes of HomeComponent
  export const homeChildRoutes : Routes = [

@@ -1,3 +1,13 @@
-.body {
+html {
 	background: radial-gradient(ellipse at center, #f7f7f7 0%,#f3f3f3 60%,#d3d3d3 100%)
+}
+
+nav {
+    z-index: 3;
+    width: 250px;
+    background: radial-gradient(ellipse at center, #f7f7f7 0%,#f3f3f3 60%,#d3d3d3 100%);
+}
+
+.w3-container {
+	background: radial-gradient(ellipse at center, #f7f7f7 0%,#f3f3f3 60%,#d3d3d3 100%);
 }

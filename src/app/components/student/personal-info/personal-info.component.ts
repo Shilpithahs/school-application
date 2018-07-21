@@ -13,9 +13,11 @@ import { routerTransition } from '../../../services/config/config.service';
   animations: [routerTransition()],
   host: { '[@routerTransition]': '' }
 })
+
 export class PersonalInfoComponent implements OnInit {
   emailId: string;
   studentDetail: any;
+
   constructor(private router: Router, private route: ActivatedRoute, private studentService: StudentService, private toastr: ToastrService) {
     // Get user detail emailId number sent in params
     this.route.params.subscribe(params => {

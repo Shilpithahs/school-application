@@ -14,9 +14,11 @@ import { StudentService } from '../../services/student/student.service';
 	animations: [routerTransition()],
 	host: { '[@routerTransition]': '' }
 })
+
 export class LoginComponent implements OnInit {
 	private loginForm: FormGroup;
 	studentLogin: any;
+
 	constructor(private formBuilder: FormBuilder, private router: Router, private userService: UserService, private toastr: ToastrService, private studentService: StudentService) {
 		this.loginForm = this.formBuilder.group({
 			email: ['', [Validators.required, ValidationService.emailValidator]],
@@ -59,7 +61,6 @@ export class LoginComponent implements OnInit {
 		} else {
 			this.toastr.error('Failed', "Invalid Credentials");
 		}
-
 	}
 
 }
