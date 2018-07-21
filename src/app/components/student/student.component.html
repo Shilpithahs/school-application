@@ -1,9 +1,9 @@
 <!-- Side Bar -->
 <nav class="w3-sidebar w3-bar-block w3-collapse w3-animate-left w3-card-2" style="z-index:3;width:250px;" id="mySidebar">
     <!-- Sidebar Links -->
-    <a class="w3-bar-item w3-button" [ngClass]="{'w3-gray': (active == '/student/personalInfo')}" routerLink="/student/personalInfo"> <i class="w3-medium fa fa-user"></i> Personal Information</a>
-    <a class="w3-bar-item w3-button" routerLink="/"  [ngClass]="{'w3-gray': (active == '/')}"> <i class="w3-medium fa fa-plus"></i>  Test</a>
-    <a class="w3-bar-item w3-button" (click)="logOut()"><i class="w3-medium fa fa-sign-out"></i>  Logout</a>
+    <a class="w3-bar-item w3-button sideBtn"  routerLink="/student/personalInfo" [ngClass]="{'w3-gray': (active == '/student/personalInfo')}"> <i class="w3-medium fa fa-user"></i> Personal Information</a>
+    <a class="w3-bar-item w3-button sideBtn" routerLink="/teacher/test"  [ngClass]="{'w3-gray': (active == '/teacher/test')}"> <i class="w3-medium fa fa-plus"></i>  Test</a>
+    <a class="w3-bar-item w3-button sideBtn" (click)="logOut()"><i class="w3-medium fa fa-sign-out"></i>  Logout</a>
   </nav>
   
   <!-- Load main contents -->
