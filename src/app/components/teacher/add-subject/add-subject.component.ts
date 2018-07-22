@@ -22,35 +22,15 @@ export class AddSubjectComponent implements OnInit {
   //Add subject to the SubjectList
   public addSubject() {
     
-    this.subjectList = this.studentService.addSubject(this.subjectName);
-    if (this.subjectList) {
-			if (this.subjectList['code'] == 200) {
-				this.toastr.success(this.subjectList['message'], "Success");
+    this.studentService.addSubject(this.subjectName).subscribe((response: Response) => {
+      console.log('response subject--------', response);
+      if (response.status == 200) {
+				this.toastr.success('Success', "Subject Added Successfully");
 				this.router.navigate(['/teacher/addSubject']);
 			} else {
-				this.toastr.error(this.subjectList['message'], "Failed");
+				this.toastr.error('Failed', "Adding Subject Unsuccessfully");
 			}
-    }
+    })
   }
-  //   var value: boolean = true;
-  //   if(this.subjectList.length != 0) {
-  //     for (var i = 0; i < this.subjectList.length; i++) {
-  //       if(this.subjectList[i]['name'] === this.subject_name) {
-  //         this.toastr.error('Failed', "Name Already Exists");
-  //         value = false;
-  //       }
-  //     }
-  //     if(value)
-  //     {
-  //       this.subjectList.push(new Subject(this.subject_name));
-  //       localStorage.setItem('subjects', JSON.stringify(this.subjectList));
-  //       this.toastr.success('Success', "Subject added Successfully");
-  //     }
-  //   } else {
-  //     this.subjectList.push(new Subject(this.subject_name));
-  //     localStorage.setItem('subjectList', JSON.stringify(this.subjectList));
-  //     this.toastr.success('Success', "Subject added Successfully");
-  //   }
-  // }
 
 }

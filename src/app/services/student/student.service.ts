@@ -5,7 +5,6 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class StudentService {
-  // private studentList: StudentListObject;
 
   constructor(private _http: Http) {}
 
@@ -36,7 +35,7 @@ export class StudentService {
     // }
     // return studentList;
 
-    let url = "http://localhost:3000/studentList";
+    let url = "http://localhost:3000/getAllStudents";
     let studentList: any;
     let returnData;
     let requestoptions = new RequestOptions({
@@ -78,7 +77,7 @@ export class StudentService {
     // }
     // return subjectList;
 
-    let url = "http://localhost:3000/subjectList";
+    let url = "http://localhost:3000/getAllSubjects";
     let subjectList: any;
     let returnData;
     let requestoptions = new RequestOptions({
@@ -103,9 +102,9 @@ export class StudentService {
   }
 
   // Add subject
-  addSubject(data) {
-    let url = "http://localhost:3000/subjectList";
-    let subjectList: any;
+  addSubject(data): Observable<Response> {
+
+    let url = "http://localhost:3000/addSubject";
     let returnData;
     let requestoptions = new RequestOptions({
       method: RequestMethod.Post,
@@ -114,39 +113,16 @@ export class StudentService {
       body: data
     })
 
-    this._http.request(new Request(requestoptions))
-      .map(res => res.json())
-      .subscribe(Response => { 
-        subjectList = Response; 
-        console.log('get------', subjectList) 
-      });
-      returnData = {
-        code: 200,
-        message: "Subject Added Successfully",
-        data: subjectList
-      }
+    var req = new Request(requestoptions);
+		returnData = this._http.request(req)
 
-    return returnData;
+		return returnData;
   }
 
   // Add/Register student to the list
   doRegisterStudent(data, index, subject): Observable<object> {
-    var studentList: Array<any> = new Array<any>();
-    // let url = "http://localhost:3000/getAll";
-    // let requestoptions = new RequestOptions({
-    //   method: RequestMethod.Get,
-    //   url: url,
-    //   headers: this.getHeaders()
-    // })
-    // var studentList;
-    // this._http.request(new Request(requestoptions))
-    //   .map(res => res.json())
-    //   .subscribe(Response => { 
-    //     studentList = Response; 
-    //     console.log('get------', studentList) 
-    //   });
 
-    // let studentList = JSON.parse(localStorage.getItem('students'));
+    var studentList: Array<any> = new Array<any>();
     let returnData;
     if (index != null) {
       for (var i = 0; i < studentList.length; i++) {
@@ -165,7 +141,7 @@ export class StudentService {
       }
       studentList[index] = data;
 
-      let url = "http://localhost:3000/studentList";
+      let url = "http://localhost:3000/addSutudent";
         let requestoptions = new RequestOptions({
           method: RequestMethod.Post,
           url: url,
@@ -175,12 +151,6 @@ export class StudentService {
 
         this._http.request(new Request(requestoptions))
           .map(res => res.json())
-            .subscribe(Response => { 
-              studentList = Response; 
-              console.log('pots----', studentList);
-            });
-
-      // localStorage.setItem('students', JSON.stringify(studentList));
 
       returnData = {
         code: 200,
@@ -188,26 +158,13 @@ export class StudentService {
         data: studentList
       }
     } else {
-      // data.id = this.generateRandomID();
-      // if(this.studentList != undefined) {
-      //   for (var i = 0; i < this.studentList.length; i++) {
-      //     if (studentList[i].email == data.email) {
-      //       returnData = {
-      //         code: 503,
-      //         message: "Email Address Already In Use",
-      //         data: null
-      //       }
-      //       return returnData;
-      //     }
-      //   }
-      // }
       
       data.id = this.generateRandomID();
       data['subject'] = subject;
       studentList = data;
       data = JSON.stringify(studentList);
 
-      let url = "http://localhost:3000/studentList";
+      let url = "http://localhost:3000/addStudent";
       let requestoptions = new RequestOptions({
         method: RequestMethod.Post,
         url: url,
@@ -217,12 +174,7 @@ export class StudentService {
 
       this._http.request(new Request(requestoptions))
         .map(res => res.json())
-          .subscribe(Response => { 
-            studentList = Response; 
-            console.log('pots----', studentList);
-          });
 
-      // localStorage.setItem('students', JSON.stringify(studentList));
       returnData = {
         code: 200,
         message: "Student Successfully Added",
@@ -234,25 +186,12 @@ export class StudentService {
 
   // Delete student
   deleteStudent(index: number) {
-    // let studentList = JSON.parse(localStorage.getItem('students'));
-
-    // studentList.splice(index, 1);
-
-    // localStorage.setItem('students', JSON.stringify(studentList));
-
-    // let returnData = {
-    //   code: 200,
-    //   message: "Student Successfully Deleted",
-    //   data: JSON.parse(localStorage.getItem('students'))
-    // }
-
-    // return returnData;
 
     let studentList = this.getAllStudents();
     let returnData;
     studentList.splice(index, 1);
 
-    let url = "http://localhost:3000/studentList";
+    let url = "http://localhost:3000/deleteStudent";
       let requestoptions = new RequestOptions({
         method: RequestMethod.Post,
         url: url,
@@ -277,21 +216,6 @@ export class StudentService {
 
   // Update student
   updateStudent(value, id) {
-    // let studentList = JSON.parse(localStorage.getItem('students'));
-
-    // for (var i = 0; i < studentList.length; i++) {
-    //   if (studentList[i].id == id) {
-    //     studentList[i].subjects.value = value;
-    //   }
-    // }
-
-    // localStorage.setItem('students', JSON.stringify(studentList));
-
-    // let returnData = {
-    //   code: 200,
-    //   message: "Student Details Updated Successfully",
-    //   data: JSON.parse(localStorage.getItem('students'))
-    // }
 
     let studentList = this.getAllStudents();
     let returnData;
@@ -389,14 +313,3 @@ export class StudentService {
   }
 
 }
-
-// export class StudentListObject {
-//   private id: string = '';
-//   private first_name: string = '';
-//   private last_name: string = '';
-//   private email: string = '';
-//   private phone: string = '';
-//   private standard: string = '';
-//   private subject: string = '';
-// }
-

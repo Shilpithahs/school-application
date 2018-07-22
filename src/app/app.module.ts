@@ -38,12 +38,12 @@ import { RegisterComponent } from './components/register/register.component';
 
 // Parent Routes
 const routes : Routes = [
-{
-	path: '',
-	component: HomeComponent,
-	children :homeChildRoutes,
-	canActivate : [AuthService]
-},
+// {
+// 	path: '',
+// 	component: HomeComponent,
+// 	children :homeChildRoutes,
+// 	canActivate : [AuthService]
+// },
 {
 	path: 'login',
 	component: LoginComponent
@@ -59,14 +59,14 @@ const routes : Routes = [
 {
 	path: 'teacher',
 	component: TeacherComponent,
-	children : teacherChildRoutes,
-	canActivate : [AuthService]
+	children : teacherChildRoutes
+	// canActivate : [AuthService]
 },
 {
 	path: 'student',
 	component: StudentComponent,
-	children :studentChildRoutes,
-	canActivate : [AuthService]
+	children :studentChildRoutes
+	// canActivate : [AuthService]
 }
 // {
 // 	path: '**',

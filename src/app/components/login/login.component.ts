@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { RouterModule, Routes, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ValidationService } from '../../services/config/config.service';
 import { UserService } from '../../services/user/user.service';
 import { ToastrService } from 'ngx-toastr';
@@ -15,7 +15,7 @@ import { StudentService } from '../../services/student/student.service';
 	host: { '[@routerTransition]': '' }
 })
 
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 	private loginForm: FormGroup;
 	studentLogin: any;
 
@@ -26,37 +26,43 @@ export class LoginComponent implements OnInit {
 		});
 	}
 
-	// Check if user already logged in
-	ngOnInit() {
-		if (localStorage.getItem('userData')) {
-			this.router.navigate(['/']);
-		}
-	}
-
 	// Initicate login
 	doLogin() {
-		this.studentLogin = this.studentService.getStudentDetailsByEmailId(this.loginForm.value.email);
-		if (this.studentLogin.studentData) {
-			// this.success(this.studentLogin.studentData);
-			var id = this.studentLogin.studentData.id;
-			localStorage.setItem('userData', JSON.stringify(this.studentLogin.studentData));
-			this.router.navigate(['/student/personalInfo', id]);
-			this.toastr.success('Success', "Logged In Successfully");
-		} else {
-			let login = this.userService.doLogin(this.loginForm.value);
-			this.success(login);
-		}
+		var value: boolean = true;
+		this.userService.getAllUsers().subscribe((response: Response) => {
+			if(response.status == 200) {
+				var data = JSON.parse(response['_body']);
+				for(var i = 0; i< data.length; i++) {
+					if(data[i]['email'] == this.loginForm.value.email) {
+						if(data[i]['password'] == this.loginForm.value.password) {
+							value = false;
+							this.success(data[i]);
+						} else {
+							this.router.navigate(['/login']);
+							this.toastr.error('Failed', 'Wrong password, reenter the password');
+							value = false;
+						}
+					}
+				}
+
+				if(value) {
+					this.router.navigate(['/register']);
+					this.toastr.error('Failed', 'emailID doesnt exsists, please register first for login');
+				}	
+			}
+		});
 	}
 
 	// Login success function
 	success(data) {
-		if (data.data.admin) {
-			localStorage.setItem('userData', JSON.stringify(data.data));
+		if (data.role == 'admin') {
 			this.router.navigate(['/admin']);
 			this.toastr.success('Success', "Logged In Successfully");
-		} else if (data.data.teacher) {
-			localStorage.setItem('userData', JSON.stringify(data.data));
+		} else if (data.role == 'teacher') {
 			this.router.navigate(['/teacher']);
+			this.toastr.success('Success', "Logged In Successfully");
+		} else if (data.role == 'student') {
+			this.router.navigate(['/student']);
 			this.toastr.success('Success', "Logged In Successfully");
 		} else {
 			this.toastr.error('Failed', "Invalid Credentials");

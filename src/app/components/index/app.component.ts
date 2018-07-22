@@ -9,59 +9,7 @@ import { AuthService, AppGlobals } from 'angular2-google-login';
 
 export class AppComponent {
 
-	// Add few students for initial listing
-	studentsList = [
-	{	
-		id : "0",
-		first_name : "Sangwin",
-		last_name : "Gawande",
-		email : "sangwin@gmail.com",
-		phone : 9503733178,
-		standard : 2,
-		subject: "Civil"
-	},
-	{
-		id : "1",
-		first_name : "Oman",
-		last_name : "Umir",
-		email : "oman@gmail.com",
-		phone : 8574889658,
-		standard : 5,
-		subject: "Electrical"
-	},
-	{
-		id : "2",
-		first_name : "Tina",
-		last_name : "Dillon",
-		email : "tina@gmail.com",
-		phone : 7485889658,
-		standard : 4,
-		subject: "Civil"
-	},
-	{
-		id : "3",
-		first_name : "John",
-		last_name : "Doe",
-		email : "john@gmail.com",
-		phone : 9685589748,
-		standard : 6,
-		subject: "Computer Science"
-	},
-	{
-		id : "4",
-		first_name : "Peter",
-		last_name : "Parker",
-		email : "peter@gmail.com",
-		phone : 8595856547,
-		standard : 8,
-		subject: "Mechanical"
-	}
-	];
-
-	constructor() {
-		// Save students to localStorage
-		localStorage.setItem('students', JSON.stringify(this.studentsList));
-	}
+	constructor() {}
 }
 
 declare const gapi: any;

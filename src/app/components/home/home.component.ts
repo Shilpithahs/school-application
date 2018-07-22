@@ -47,6 +47,7 @@
 
  // Define and export child routes of HomeComponent
  export const homeChildRoutes : Routes = [
+
  {
  	path: 'studentList',
  	component: StudentListComponent

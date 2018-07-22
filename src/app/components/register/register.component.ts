@@ -28,42 +28,33 @@ export class RegisterComponent {
 		});
 	}
 
-	// // Check if user already logged in
-	// ngOnInit() {
-	// 	if (localStorage.getItem('userData')) {
-	// 		this.router.navigate(['/']);
-	// 	}
-	// }
-
-	// Initicate register
+	// Initiate register
 	doRegister() {
-		this.register = this.userService.doRegister(this.registerForm.value);
-		this.success(this.register);
-		// if (this.register.studentData) {
-		// 	// this.success(this.register.studentData);
-		// 	var id = this.register.studentData.id;
-		// 	localStorage.setItem('userData', JSON.stringify(this.register.studentData));
-		// 	this.router.navigate(['/student/personalInfo', id]);
-		// 	this.toastr.success('Success', "Logged In Successfully");
-		// } else {
-		// 	let register = this.userService.doRegister(this.registerForm.value);
-		// 	this.success(register);
-		// }
-	}
-
-	// Register success function
-	success(data) {
-		if (data.data.role == 'admin') {
-			localStorage.setItem('userData', JSON.stringify(data.data));
-			this.router.navigate(['/admin']);
-			this.toastr.success('Success', "Logged In Successfully");
-		} else if (data.data.role == 'teacher') {
-			localStorage.setItem('userData', JSON.stringify(data.data));
-			this.router.navigate(['/teacher']);
-			this.toastr.success('Success', "Logged In Successfully");
-		} else {
-			this.toastr.error('Failed', "Invalid Credentials");
-		}
+		var value: boolean = true;
+		this.userService.getAllUsers().subscribe((response: Response) => {
+			if(response.status == 200) {
+				var data = JSON.parse(response['_body']);
+				for(var i = 0; i< data.length; i++) {
+					if(data[i]['email'] == this.registerForm.value.email) {
+						this.router.navigate(['/login']);
+						this.toastr.error('Failed', 'User with this emailID already exsists, try loginin');
+						value = false;
+					}
+				}
+				
+				if(value) {
+					this.userService.doRegister(this.registerForm.value).subscribe((response: Response) => {
+						if(response.status == 200) {
+							this.router.navigate(['/login']);
+							this.toastr.success('Success', 'Registered Successfully');
+						}  else {
+							this.router.navigate(['/register']);
+							this.toastr.error('Failed', 'Register Unsuccessfully');
+						}
+					});
+				}
+			}
+		});
 	}
 
 }

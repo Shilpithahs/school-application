@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RequestOptions, Request, RequestMethod, Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { Observable } from '../../../../node_modules/rxjs/Observable';
 
 
 @Injectable()
@@ -17,47 +18,25 @@ export class UserService {
 		return headers;
 	}
 
-	doLogin(data){
-		if (data.email == "admin@gmail.com" && data.password == "admin123") {
-			var incStr = data.email;
-			if(incStr.includes('admin')) {
-				data.admin = true;
-				return {
-					code : 200,
-					message : "Login Successful",
-					data : data
-				};
-			}
-		} else if (data.email == "teacher@gmail.com" && data.password == "teacher123") {
-			var incStr = data.email;
-			if(incStr.includes('teacher')) {
-				data.teacher = true;
-				return {
-					code : 200,
-					message : "Login Successful",
-					data : data
-				};
-			}
-		}  else if (data.email == "student@gmail.com" && data.password == "student123") {
-			var incStr = data.email;
-			if(incStr.includes('student')) {
-				data.student = true;
-				return {
-					code : 200,
-					message : "Login Successful",
-					data : data
-				};
-			}
-		} else {
-			return {
-				code : 503,
-				message : "Invalid Credentials",
-				data : null
-			};
-		}
+	getAllUsers(): Observable<Response> {
+		// get all registered users
+		var url = "http://localhost:3000/getAllUsers";
+		var returnData;
+		var requestoptions = new RequestOptions({
+			method: RequestMethod.Get,
+			url: url,
+			headers: this.getHeaders()
+		})
+
+		var req = new Request(requestoptions);
+		returnData = this._http.request(req)
+
+		return returnData;
 	}
 
-	doRegister(data) {
+	doRegister(data): Observable<Response> {
+
+		// adding role to the user
 		if(data.firstName == 'admin'){
 			data.role = 'admin';
 		} else if(data.firstName == 'teacher') {
@@ -65,29 +44,22 @@ export class UserService {
 		} else {
 			data.role = 'student';
 		}
-		let user;
-		let returnData;
-		let url = "http://localhost:3000/user";
-		  let requestoptions = new RequestOptions({
+		
+		// register new user
+		var returnData;
+		var url = "http://localhost:3000/registerUser";
+		var requestoptions = new RequestOptions({
 			method: RequestMethod.Post,
 			url: url,
 			headers: this.getHeaders(),
 			body: data
-		  })
-	
-		  this._http.request(new Request(requestoptions))
-			.map(res => res.json())
-			  .subscribe(Response => { 
-				user = Response; 
-				console.log('post register user----', user);
-			  });
-	
-		  returnData = {
-			code: 200,
-			message: "User Registered Successfully Added",
-			data: user
-		  }
+		})
+
+		var req = new Request(requestoptions);
+		returnData = this._http.request(req)
+
 		return returnData;
-	  }
-	
 	}
+
+}
+
