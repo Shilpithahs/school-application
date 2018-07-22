@@ -102,6 +102,33 @@ export class StudentService {
     return returnData;
   }
 
+  // Add subject
+  addSubject(data) {
+    let url = "http://localhost:3000/subjectList";
+    let subjectList: any;
+    let returnData;
+    let requestoptions = new RequestOptions({
+      method: RequestMethod.Post,
+      url: url,
+      headers: this.getHeaders(),
+      body: data
+    })
+
+    this._http.request(new Request(requestoptions))
+      .map(res => res.json())
+      .subscribe(Response => { 
+        subjectList = Response; 
+        console.log('get------', subjectList) 
+      });
+      returnData = {
+        code: 200,
+        message: "Subject Added Successfully",
+        data: subjectList
+      }
+
+    return returnData;
+  }
+
   // Add/Register student to the list
   doRegisterStudent(data, index, subject): Observable<object> {
     var studentList: Array<any> = new Array<any>();
@@ -178,6 +205,7 @@ export class StudentService {
       data.id = this.generateRandomID();
       data['subject'] = subject;
       studentList = data;
+      data = JSON.stringify(studentList);
 
       let url = "http://localhost:3000/studentList";
       let requestoptions = new RequestOptions({

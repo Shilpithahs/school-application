@@ -6,7 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ValidationService } from '../../../services/config/config.service';
 import { StudentService } from '../../../services/student/student.service';
 import { routerTransition } from '../../../services/config/config.service';
-import { Subject } from '../../../components/teacher/add-subject/add-subject.component';
+// import { Subject } from '../../../components/teacher/add-subject/add-subject.component';
 
 import { ToastrService } from 'ngx-toastr';
 import { error } from '../../../../../node_modules/protractor';
