@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
-import {trigger, state, animate, style, transition} from '@angular/core';
+import {trigger, animate, style, transition} from '@angular/core';
 
 @Injectable()
 export class ConfigService {
@@ -10,25 +10,30 @@ export class ConfigService {
 export class ValidationService {
 
 	static firstNameValidator(control) {
-		// RFC 2822 compliant regex
 		if (control.value.match(/^[a-zA-Z ]+$/)) {
 			return null;
 		} else {
-			return { 'invalidEmailAddress': true };
+			return { 'invalidFirstName': true };
 		}
 	}
 
 	static lastNameValidator(control) {
-		// RFC 2822 compliant regex
 		if (control.value.match(/^[a-zA-Z ]+$/)) {
 			return null;
 		} else {
-			return { 'invalidEmailAddress': true };
+			return { 'invalidLastName': true };
+		}
+	}
+
+	static subjectNameValidator(control) {
+		if (control.value.match(/^[a-zA-Z ]+$/)) {
+			return null;
+		} else {
+			return { 'invalidSubjectName': true };
 		}
 	}
 
 	static emailValidator(control) {
-		// RFC 2822 compliant regex
 		if (control.value.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)) {
 			return null;
 		} else {

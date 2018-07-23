@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { StudentListComponent } from '../list/student-list.component';
 
 // Services
 import { ValidationService } from '../../../services/config/config.service';
 import { StudentService } from '../../../services/student/student.service';
 import { routerTransition } from '../../../services/config/config.service';
-// import { Subject } from '../../../components/teacher/add-subject/add-subject.component';
 
 import { ToastrService } from 'ngx-toastr';
-import { error } from '../../../../../node_modules/protractor';
 
 @Component({
 	selector: 'add-student',
@@ -26,6 +25,8 @@ export class AddStudentComponent implements OnInit {
 	index: any;
 	studentList: any;
 	subjectList: any;
+
+	@Output() studentForm = new EventEmitter();
 
 	constructor(private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute, private studentService: StudentService, private toastr: ToastrService) {
 		// Check for route params
@@ -45,32 +46,86 @@ export class AddStudentComponent implements OnInit {
 	}
 
 	// Submit student details form
-	doRegisterUser() {
+	addStudent() {
+
+		var value: boolean = true;
 		if (this.index && this.index != null && this.index != undefined) {
-			this.studentAddForm.value.id = this.index
+			this.studentAddForm.value.id = this.index;
+			this.studentService.getAllStudents().subscribe((response: Response) => {
+				if(response.status == 200) {
+					var data = JSON.parse(response['_body']);
+					for(var i = 0; i< data.length; i++) {
+						if(data[i]['id'] == this.studentAddForm.value.id) {
+							data[i]['email'] = this.studentAddForm.value.email;
+							data[i]['first_name'] = this.studentAddForm.value.first_name;
+							data[i]['last_name'] = this.studentAddForm.value.last_name;
+							data[i]['phone'] = this.studentAddForm.value.phone;
+							data[i]['standard'] = this.studentAddForm.value.standard;
+							data[i]['subject'] = this.studentAddForm.value.subject;
+
+							this.studentService.updateStudent(data[i]).subscribe((response: Response) => {
+								if(response.status == 200) {
+									window.location.reload();
+									this.router.navigate(['/teacher/studentList']);
+									this.toastr.success('Success', 'Student details updated successfully');
+								}
+							});
+						}
+					}
+				}
+			});
 		} else {
+
 			this.index = null;
-		}
-		let studentRegister = this.studentService.doRegisterStudent(this.studentAddForm.value, this.index, this.selectedSubject);
-		if (studentRegister) {
-			if (studentRegister['code'] == 200) {
-				this.toastr.success(studentRegister['message'], "Success");
-				this.router.navigate(['/teacher/studentList']);
-			} else {
-				this.toastr.error(studentRegister['message'], "Failed");
-			}
+			this.studentService.getAllStudents().subscribe((response: Response) => {
+				if(response.status == 200) {
+					var data = JSON.parse(response['_body']);
+					for(var i = 0; i< data.length; i++) {
+						if(data[i]['email'] == this.studentAddForm.value.email) {
+							this.router.navigate(['/teacher/addStudent']);
+							this.toastr.error('Failed', 'Student with this emailID already exsists');
+							value = false;
+						}
+					}
+			
+					if(value) {
+						this.studentService.addStudent(this.studentAddForm.value, this.index, this.selectedSubject).subscribe((response: Response) => {
+							if(response.status == 200) {
+								this.toastr.success('Success', "Student Added Successfully");
+								this.router.navigate(['/teacher/studentList']);
+							}  else {
+								this.toastr.error('Failed', "Adding Subject Unsuccessfully");
+								this.router.navigate(['/teacher/addStudent']);
+							}
+						});
+					}
+				}
+			})
 		}
 	}
 
 	// If this is update form, get user details and update form
 	getStudentDetails(index: number) {
-		let studentDetail = this.studentService.getStudentDetails(index);
-		this.createForm(studentDetail);
+		this.studentService.getAllStudents().subscribe((response: Response) => {
+			if(response.status == 200) {
+				var data = JSON.parse(response['_body']);
+				for(var i = 0; i< data.length; i++) {
+					if(data[i]['id'] == index) {
+						let studentDetail = data[i];
+						this.createForm(studentDetail);
+					}
+				}
+			}
+		})
 	}
 
 	// get subject details
-	getSubjectList() {
-		this.subjectList = this.studentService.getAllSubjects().data;
+	getSubjectList(){
+		this.studentService.getAllSubjects().subscribe((response: Response) => {
+			if(response.status == 200) {
+				this.subjectList = JSON.parse(response['_body']);
+			}
+		});
 	}
 
 	// on dropdown select change
@@ -99,12 +154,12 @@ export class AddStudentComponent implements OnInit {
 			});
 		} else {
 			this.studentAddForm = this.formBuilder.group({
-				first_name: [data.studentData.first_name, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-				last_name: [data.studentData.last_name, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-				email: [data.studentData.email, [Validators.required, ValidationService.emailValidator]],
-				phone: [data.studentData.phone, [Validators.required, ValidationService.checkLimit(5000000000, 9999999999)]],
-				standard: [data.studentData.standard, [Validators.required, ValidationService.checkLimit(1, 12)]],
-				subject: [data.studentData.subject, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+				first_name: [data.first_name, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+				last_name: [data.last_name, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+				email: [data.email, [Validators.required, ValidationService.emailValidator]],
+				phone: [data.phone, [Validators.required, ValidationService.checkLimit(5000000000, 9999999999)]],
+				standard: [data.standard, [Validators.required, ValidationService.checkLimit(1, 12)]],
+				subject: [data.subject, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
 			});
 		}
 	}

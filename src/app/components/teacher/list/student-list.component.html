@@ -1,14 +1,14 @@
-<div class="w3-container" *ngIf="studentListData">
+<div class="w3-container" *ngIf="studentList">
 	<div class="w3-panel w3-round-small w3-teal" style="background-color: #4e97f4 !important;">
-		<h3>Student List <button routerLink="/add" class="w3-button w3-white custom-button"><i class="w3-medium  fa fa-plus"></i> Add New Student</button></h3>
+		<h3>Student List <button routerLink="/teacher/addStudent" class="w3-button w3-white custom-button"><i class="w3-medium  fa fa-plus"></i> Add New Student</button></h3>
 	</div>
 	<span><i class="w3-medium fa fa-search"></i> Search : <input class="" type="text" [(ngModel)]='filterData'></span>
 
-	<div class="w3-panel w3-green" *ngIf="(studentListData | filter:filterData).length == 0">
+	<div class="w3-panel w3-green" *ngIf="(studentList | filter:filterData).length == 0">
 		<h3>Oh no</h3>
 		<p>No students found <span *ngIf="filterData"> with search "{{filterData}}"</span> </p>
 	</div>
-	<div class="w3-panel w3-light-grey w3-padding-16 w3-card-2" *ngIf="(studentListData | filter:filterData | filter:filterData).length != 0">
+	<div class="w3-panel w3-light-grey w3-padding-16 w3-card-2" *ngIf="(studentList | filter:filterData | filter:filterData).length != 0">
 		<table class="w3-table w3-striped w3-bordered">
 			<tr>
 				<th><i class="w3-medium custom-icon fa fa-refresh"></i> Sr. No.</th>
@@ -22,22 +22,14 @@
 				<th><i class="w3-medium custom-icon fa fa-pencil"></i> Update</th>
 				<th><i class="w3-medium custom-icon fa fa-trash"></i> Delete</th>
 			</tr>
-			<tr *ngFor="let student of studentListData | filter:filterData; index as i;" appHighlightStudent>
-				<td>{{i +1}}</td>
+			<tr *ngFor="let student of studentList | filter:filterData; index as i;" appHighlightStudent>
+				<td>{{i + 1}}</td>
 				<td class="pointer" [routerLink]="['detail', student.id]">{{student.first_name}} </td>
 				<td class="pointer" [routerLink]="['detail', student.id]">{{student.last_name}}</td>
 				<td class="pointer" [routerLink]="['detail', student.id]">{{student.phone | phone}}</td>
 				<td class="pointer" [routerLink]="['detail', student.id]">{{student.email}}</td>
 				<td class="pointer" [routerLink]="['detail', student.id]">{{student.standard}}</td>
-				<td class="pointer">
-					<select (change)="dropDownChanged($event.target.value, student.id)">
-						<option *ngFor="let subject of subjectList"
-							[value]="subject.name"
-							[selected]="student.subject">
-							{{subject.name}}
-						</option>
-					</select>
-				</td>
+				<td class="pointer" [routerLink]="['detail', student.id]">{{student.subject}}</td>
 				<td><button [routerLink]="['update', student.id]" class="w3-button w3-blue">Update</button></td>
 				<td><button (click)="deleteStudent(student.id);" class="w3-button w3-red">Delete</button></td>
 			</tr>

@@ -17,7 +17,7 @@
  export class StudentDetailsComponent implements OnInit {
 	subjectList:any;
  	index:any;
-	 studentDetail:any;
+	studentDetail:any;
 
  	constructor(private router: Router, private route: ActivatedRoute, private studentService:StudentService,private toastr: ToastrService) { 
  		// Get user detail index number sent in params
@@ -29,20 +29,22 @@
  		});
  	}
 
- 	ngOnInit() {
- 	}
+ 	ngOnInit() {}
 
  	// Get student details 
  	getStudentDetails(index:number){
- 		let getStudentDetail = this.studentService.getStudentDetails(index);
- 		if(getStudentDetail) {
- 			this.studentDetail = getStudentDetail.studentData;
- 			this.toastr.success(getStudentDetail.message,"Success");
- 		}
-	 }
-	 
-	getSubjectList(){
-		this.subjectList = this.studentService.getAllSubjects().data;
+
+		this.studentService.getAllStudents().subscribe((response: Response) => {
+			if(response.status == 200) {
+				var data = JSON.parse(response['_body']);
+				for(var i = 0; i< data.length; i++) {
+					if(data[i]['id'] == index) {
+						this.studentDetail = data[i];
+						this.toastr.success("Success", "Successfully loaded student detail");
+					}
+				}
+			}
+		})
 	}
 
- }
+}

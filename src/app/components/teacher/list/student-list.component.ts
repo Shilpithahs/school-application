@@ -1,9 +1,10 @@
- import { Component, OnInit } from '@angular/core';
+ import { Component, OnInit, Input } from '@angular/core';
  import { ToastrService } from 'ngx-toastr';
 
  // Services
  import { StudentService } from '../../../services/student/student.service';
  import { routerTransition } from '../../../services/config/config.service';
+import { Router } from '../../../../../node_modules/@angular/router';
 
  @Component({
  	selector: 'app-student-list',
@@ -14,61 +15,56 @@
  })
 
  export class StudentListComponent implements OnInit {
+	 static updateForm(arg0: any): any {
+		 throw new Error("Method not implemented.");
+	 }
  	studentList:any;
  	subjectList:any;
 	studentListData:any;
 
-	constructor(private studentService:StudentService,private toastr: ToastrService) { }
+	@Input() studentForm;
+
+	constructor(private studentService:StudentService, private toastr: ToastrService, private router: Router) { }
 	 
  	// Call studentList and subjectList function on page load 
  	ngOnInit() {
 		this.getStudentList();
-		this.getSubjectList();
- 	}
+	}
 
- 	// Get student list from services
+ 	// Get all student list
  	getStudentList(){
- 		let studentList = this.studentService.getAllStudents();
- 		this.success(studentList)
+		this.studentService.getAllStudents().subscribe((response: Response) => {
+			if(response.status == 200) {
+				this.studentList = JSON.parse(response['_body']);
+				this.router.navigate(['/teacher/studentList']);
+				this.toastr.success('Success', 'Successfully loaded student list');
+			}
+		});
 	}
-	 
-	getSubjectList(){
-		this.subjectList = this.studentService.getAllSubjects().data;
-	}
-
- 	// Get student list success
- 	success(data){
- 		this.studentListData = data.data;
- 		for (var i = 0; i < this.studentListData.length; i++) {
- 			this.studentListData[i].name = this.studentListData[i].first_name +' '+ this.studentListData[i].last_name;
- 		}
- 	}
 
  	// Delete a student
  	deleteStudent(index:number){
- 		// get confirm box for confirmation
- 		let r = confirm("Are you sure?");
- 		if (r == true) {
- 			let studentDelete = this.studentService.deleteStudent(index);
- 			if(studentDelete) {
- 				this.toastr.success("Success", "Student Deleted");
- 			} 
- 			this.getStudentList();
- 		}
-	}
-	 
-	// on dropdown select change
-	dropDownChanged(value, studentId) {
-		this.studentList.forEach(student => {
-			if(student.id == studentId) {
-				student.subject = value;
-				this.updateStudent(student.subject, student.id)
+
+		this.studentService.getAllStudents().subscribe((response: Response) => {
+			if(response.status == 200) {
+				var data = JSON.parse(response['_body']);
+				for(var i = 0; i< data.length; i++) {
+					if(data[i]['id'] == index) {
+						this.studentService.deleteStudent({id: data[i].id}).subscribe((response: Response) => {
+							if(response.status == 200) {
+								this.getStudentList();
+								window.location.reload();
+								this.router.navigate(['/teacher/studentList']);
+								this.toastr.success('Success', 'Student Deleted Successfully');
+							} else {
+								this.router.navigate(['/teacher/studentList']);
+								this.toastr.error('Failed', 'Unable to delete student detail');
+							}
+						});
+					}
+				}
 			}
 		});
 	}
 	
-	// Update a student
-	updateStudent(subject: string, id: number){
-		this.subjectList = this.studentService.updateStudent(subject, id);
-	}
 }

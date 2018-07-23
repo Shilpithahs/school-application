@@ -30,6 +30,7 @@ export class RegisterComponent {
 
 	// Initiate register
 	doRegister() {
+		
 		var value: boolean = true;
 		this.userService.getAllUsers().subscribe((response: Response) => {
 			if(response.status == 200) {

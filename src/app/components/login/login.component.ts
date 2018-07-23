@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ValidationService } from '../../services/config/config.service';
@@ -63,6 +63,7 @@ export class LoginComponent {
 			this.toastr.success('Success', "Logged In Successfully");
 		} else if (data.role == 'student') {
 			this.router.navigate(['/student']);
+			localStorage.setItem('studentUser', data.email);
 			this.toastr.success('Success', "Logged In Successfully");
 		} else {
 			this.toastr.error('Failed', "Invalid Credentials");
